@@ -12,7 +12,8 @@ $(function(){
         $('#preview-name').html($('select[name = member_id] :selected').text());
         $('#preview-type').html($('select[name = type_id] :selected').text());
         $('#preview-date').html($('input[name = apply_date]').val());
-        $('#preview-time').html($('input[name = arrive_time]').val());
+        $('#preview-arrival-time').html($('input[name = arrival_time]').val());
+        $('#preview-leaving-time').html($('input[name = leaving_time]').val());
         $('#preview-comment').html($('textarea[name = comment]').val());
     });
 
@@ -35,8 +36,10 @@ $(function(){
             .html(res.type_name);
             $tr.find('.history-apply-date')
             .html(res.apply_date);
-            $tr.find('.history-arrive-time')
-            .html(res.arrive_time);
+            $tr.find('.history-arrival-time')
+            .html(res.arrival_time);
+            $tr.find('.history-leaving-time')
+            .html(res.leaving_time);
             $tr.find('.history-comment')
             .html(res.comment);
             console.log($tr);

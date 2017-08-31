@@ -4,7 +4,7 @@ require_once(__DIR__ . '/functions.php');
 require_once(__DIR__ . '/Attendance_Db.php');
 
 //create reference to database
-$attendanceDb = new \MyApp\AttendanceDb();
+$attendanceDb = new AttendanceDb();
 $members = $attendanceDb->getMembers();
 $types = $attendanceDb->getTypes();
 $histories = $attendanceDb->getHistories();
@@ -37,12 +37,35 @@ $histories = $attendanceDb->getHistories();
                     <?php endforeach; ?>
                 </select>
                 <p>
-                    <input type="date" name = "date_range_first"/>から
-                    <input type="date" name = "date_range-last"/>まで
+                    <input type="date" name = "date_range_first" value="<?php echo date('Y-m-j');?>"/>から
+                    <input type="date" name = "date_range_last" value="<?php echo date('Y-m-j');?>"/>まで
                 </p>
                 <input type="submit" value=" 検索する " />
             </form>
         </fieldset>
+        <table id="search-results">
+            <thead>
+                <tr><td>
+                    ヒット数：
+                    <span id="num-results"></span>
+                </td></tr>
+            </thead>
+            <tbody id="results-part">
+                <tr id="search-result-template">
+                    <td>
+                    <hr>
+                    <ul>
+                        <li class = "result-member-name"></li>
+                        <li class = "result-type-name"></li>
+                        <li class = "result-apply-date"></li>
+                        <li class = "result-arrival-time"></li>
+                        <li class = "result-leaving-time"></li>
+                        <li class = "result-comment"></li>
+                    </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/search-histories.js"></script>
     </body>

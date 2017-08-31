@@ -4,7 +4,7 @@ require_once(__DIR__ . '/functions.php');
 require_once(__DIR__ . '/Attendance_Db.php');
 
 //create reference to database
-$attendanceDb = new \MyApp\AttendanceDb();
+$attendanceDb = new AttendanceDb();
 $members = $attendanceDb->getMembers();
 $types = $attendanceDb->getTypes();
 $histories = $attendanceDb->getHistories();
@@ -38,9 +38,11 @@ $histories = $attendanceDb->getHistories();
                     <?php endforeach; ?>
                 </select>
                 申請したい日：
-                <input type="date" name = "apply_date"/>
+                <input type="date" name = "apply_date" value="<?php echo date('Y-m-j');?>"/>
                 出社時間:
-                <input type="time" name = "arrive_time"/>
+                <input type="time" name = "arrival_time" value="10:00"/>
+                退社時間:
+                <input type="time" name = "leaving_time" value="19:00"/>
             </p>
             <p>
                 コメント：
@@ -64,7 +66,10 @@ $histories = $attendanceDb->getHistories();
                             <td>申請したい日</td><td id="preview-date"></td>
                         </tr>
                         <tr>
-                            <td>出社時間</td><td id="preview-time"></td>
+                            <td>出社時間</td><td id="preview-arrival-time"></td>
+                        </tr>
+                        <tr>
+                            <td>退社時間</td><td id="preview-leaving-time"></td>
                         </tr>
                         <tr>
                             <td>コメント</td><td id="preview-comment"></td>
@@ -82,7 +87,8 @@ $histories = $attendanceDb->getHistories();
                         <li class = "history-member-name"><?= h($history->member_name); ?></li>
                         <li class = "history-type-name"><?= h($history->type_name); ?></li>
                         <li class = "history_apply_date"><?= h($history->apply_date); ?></li>
-                        <li class = "history-arrive_time"><?= h($history->arrive_time); ?></li>
+                        <li class = "history-arrival_time"><?= h($history->arrival_time); ?></li>
+                        <li class = "history-leaving_time"><?= h($history->leaving_time); ?></li>
                         <li class = "history-comment"><?= h($history->reason); ?></li>
                     </ul>
                 </td>
@@ -95,7 +101,8 @@ $histories = $attendanceDb->getHistories();
                     <li class = "history-member-name"></li>
                     <li class = "history-type-name"></li>
                     <li class = "history-apply-date"></li>
-                    <li class = "history-arrive-time"></li>
+                    <li class = "history-arrival-time"></li>
+                    <li class = "history-leaving-time"></li>
                     <li class = "history-comment"></li>
                 </ul>
                 </td>

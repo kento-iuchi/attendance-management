@@ -1,5 +1,5 @@
 <?php
-namespace MyApp;
+include 'php/ChromePhp.php';
 
 class AttendanceDb{
     private $_db;
@@ -38,7 +38,8 @@ class AttendanceDb{
             M.name as member_name,
             T.name as type_name,
             H.apply_date,
-            H.arrive_time,
+            TIME_FORMAT(H.arrival_time, '%H:%i') as arrival_time,
+            TIME_FORMAT(H.leaving_time, '%H:%i') as leaving_time,
             H.reason
         FROM
             histories H
@@ -61,7 +62,7 @@ class AttendanceDb{
         switch ($_POST['mode']) {
             case 'leave':
                 return $this->_leaveInHistories();
-            case 'serach':
+            case 'search':
                 return $this->_searchFromHistories();
         }
         //return $this->_leaveInHistories();
@@ -82,7 +83,8 @@ class AttendanceDb{
             member_id,
             type_id,
             apply_date,
-            arrive_time,
+            arrival_time,
+            leaving_time,
             reason
         )
         VALUES
@@ -90,15 +92,16 @@ class AttendanceDb{
             :member_id,
             :type_id,
             :apply_date,
-            :arrive_time,
+            :arrival_time,
+            :leaving_time,
             :reason
         )
         ";
 
         $stmt = $this->_db->prepare($sql_query);
-        $record_insert = array(':member_id' => $member_id,  ':type_id'     => $type_id,
-                               ':apply_date'=> $apply_date, ':arrive_time' => $arrive_time,
-                               ':reason'    => $comment);
+        $record_insert = array(':member_id'  => $member_id,    ':type_id'     => $type_id,
+                               ':apply_date' => $apply_date,   ':arrival_time'=> $arrival_time,
+                               'leaving_time'=> $leaving_time, ':reason'      => $comment);
 
         $stmt->execute($record_insert);
         //以下戻り値の整備
@@ -112,11 +115,12 @@ class AttendanceDb{
 
         return [
             'id' => $id,
-            'member_name' => $member_name,
-            'type_name'   => $type_name,
-            'apply_date'  => $apply_date,
-            'arrive_time' => $arrive_time,
-            'comment'     => $comment
+            'member_name'  => $member_name,
+            'type_name'    => $type_name,
+            'apply_date'   => $apply_date,
+            'arrival_time' => $arrival_time,
+            'leaving_time' => $leaving_time,
+            'comment'      => $comment
         ];
     }
 
@@ -126,40 +130,60 @@ class AttendanceDb{
         if(!isset($_POST['search_conditions'])) {
             throw new \Exception('[serach] input not set!');
         }
-        parse_str($_POST['search_conditions']);//inputsのクエリ文字列を変数に
+        //ChromePhp::log($_POST['search_conditions']);
+        parse_str($_POST['search_conditions']);//クエリ文字列を変数
 
-        //まず指定範囲内のレコードすべてを持ってくる
-        $search_query = "
+        //検索条件の設定
+        //メンバーもタイプも指定しない
+        if( $member_id == "all_member" && $type_id == "all_type" ){
+            $additional_condition = "";
+        }
+        //メンバーだけ指定
+        if( $member_id != "all_member" && $type_id == "all_type" ){
+            $additional_condition = sprintf(" AND member_id = %d", $member_id);
+        }
+        //種類だけ指定
+        if( $member_id == "all_member" && $type_id != "all_type" ){
+            $additional_condition = sprintf(" AND type_id = %d", $type_id);
+        }
+        //メンバーも種類も指定
+        if( $member_id != "all_member" && $type_id != "all_type" ){
+            $additional_condition = sprintf(" AND member_id = %d AND type_id = %d",
+                                            $member_id, $type_id);
+        }
+
+        $search_query = sprintf("
         SELECT
-            members.name,
-            types.name,
-            histories.apply_date,
-            histories.arrive_time,
-            histories.reason
+            H.id,
+            M.name as member_name,
+            T.name as type_name,
+            H.apply_date,
+            TIME_FORMAT(H.arrival_time, '%%H:%%i') as arrival_time,
+            TIME_FORMAT(H.leaving_time, '%%H:%%i') as leaving_time,
+            H.reason
         FROM
-            histories
-            	INNER JOIN members
-            		ON histories.member_id = members.id
-            	INNER JOIN types
-                	ON histories.type_id = types.id
+            histories H
+            	INNER JOIN members M
+            		ON H.member_id = M.id
+            	INNER JOIN types T
+                	ON H.type_id = T.id
         WHERE
             1 = 1
+            AND H.apply_date BETWEEN '%s' AND '%s'
             {$additional_condition}
-        ";
-
-        $stmt = $this->_db->prepare($search_query);
-        $search_date_range = array(':first_date' => $date_range_first, ':type_id' => $date_range_last);
-        $stmt->query($search_date_range);
+        ",  $date_range_first,  $date_range_last);
+        ChromePhp::log($search_query);
+        //AND histories.apply_date BETWEEN :first_date AND :last_date
+        $stmt = $this->_db->query($search_query);
+        ChromePhp::log($stmt);
+        $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        // ChromePhp::log($results);
+        // foreach ($results as $key => $value) {
+        //     ChromePhp::log($value);
+        // }
         //以下戻り値の整備
-
-        return [
-            'id' => $id,
-            'member_name' => $member_name,
-            'type_name'   => $type_name,
-            'apply_date'  => $apply_date,
-            'arrive_time' => $arrive_time,
-            'comment'     => $comment
-        ];
+        //return $stmt;
+        return $results;
     }
 
 }
