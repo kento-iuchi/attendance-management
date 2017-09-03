@@ -14,6 +14,10 @@ class AttendanceDb{
         }
     }
 
+    public function getDepartments() {
+        $stmt = $this->_db->query("SELECT * FROM departments ORDER BY id");
+        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+    }
 
     public function getMembers() {
         $stmt = $this->_db->query("SELECT * FROM members ORDER BY id");

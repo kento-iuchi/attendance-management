@@ -5,6 +5,7 @@ require_once(__DIR__ . '/Attendance_Db.php');
 
 //create reference to database
 $attendanceDb = new AttendanceDb();
+$departments = $attendanceDb->getDepartments();
 $members = $attendanceDb->getMembers();
 $types = $attendanceDb->getTypes();
 $histories = $attendanceDb->getHistories();
@@ -27,6 +28,13 @@ $histories = $attendanceDb->getHistories();
         <form action="" id="attendance-form">
             <div id = "input-part">
             <p>
+                <!-- 各select input のnameはそのままPHPでの変数名になる -->
+                部署：
+                <select name = "department_id">
+                    <?php foreach ($departments as $department) : ?>
+                        <option value="<?= h($department->id);?>"><?= h($department->name);?></option>
+                    <?php endforeach; ?>
+                </select>
                 名前：
                 <select name = "member_id">
                     <?php foreach ($members as $member) : ?>
@@ -64,6 +72,9 @@ $histories = $attendanceDb->getHistories();
                 <fieldset id="apply_content_preview" class="hidden">
                     <legend>申請内容確認</legend>
                     <p><table>
+                        <tr>
+                            <td>部署</td><td id="preview-department"></td>
+                        </tr>
                         <tr>
                             <td>名前</td><td id="preview-name"></td>
                         </tr>

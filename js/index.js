@@ -21,6 +21,7 @@ $(function(){
     //show input preview
     $('#confirm-input').click(function(){
         $('#apply_content_preview').fadeIn(700);
+        $('#preview-department').html($('select[name = member_id] :selected').text());
         $('#preview-name').html($('select[name = member_id] :selected').text());
         $('#preview-type').html($('select[name = type_id] :selected').text());
         $('#preview-date').html($('input[name = apply_date]').val());
