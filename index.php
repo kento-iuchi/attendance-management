@@ -17,7 +17,9 @@ $histories = $attendanceDb->getHistories();
 <head>
     <meta charset="utf-8">
     <title>勤怠管理</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/index.css">
+    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/index.js"></script>
 </head>
 <body>
     <a href="search-histories.php">勤怠履歴を検索する</a>
@@ -37,12 +39,12 @@ $histories = $attendanceDb->getHistories();
                         <option value="<?= h($type->id);?>"><?= h($type->name);?></option>
                     <?php endforeach; ?>
                 </select>
-                申請したい日：
+                対象日：
                 <input type="date" name = "apply_date" value="<?php echo date('Y-m-j');?>"/>
                 出社時間:
-                <input type="time" name = "arrival_time" value="10:00"/>
+                <input type="time" name = "arrival_time" value="10:00" readonly/>
                 退社時間:
-                <input type="time" name = "leaving_time" value="19:00"/>
+                <input type="time" name = "leaving_time" value="19:00" readonly/>
             </p>
             <p>
                 コメント：
@@ -109,7 +111,5 @@ $histories = $attendanceDb->getHistories();
             </tr>
         </table>
     </div>
-    <script src="js/jquery-3.2.1.min.js"></script>
-    <script src="js/script.js"></script>
 </body>
 </html>
