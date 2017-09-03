@@ -40,7 +40,7 @@ $histories = $attendanceDb->getHistories();
                     <?php endforeach; ?>
                 </select>
                 対象日：
-                <input type="date" name = "apply_date" value="<?php echo date('Y-m-j');?>"/>
+                <input type="date" name = "apply_date" value="<?php echo date('Y-m-d');?>"/>
                 出社時間:
                 <input type="time" name = "arrival_time" value="10:00" readonly/>
                 退社時間:
@@ -65,7 +65,7 @@ $histories = $attendanceDb->getHistories();
                             <td>内容</td><td id="preview-type"></td>
                         </tr>
                         <tr>
-                            <td>申請したい日</td><td id="preview-date"></td>
+                            <td>対象日</td><td id="preview-date"></td>
                         </tr>
                         <tr>
                             <td>出社時間</td><td id="preview-arrival-time"></td>
@@ -82,31 +82,51 @@ $histories = $attendanceDb->getHistories();
             </p>
         </form>
         <table id="histories">
+            <?php $history_show_count =0; ?>
             <?php foreach (array_reverse($histories) as $history) :?>
-            <tr id = "history_<?= h($history->id); ?>" data-id = "history_<?= h($history->id); ?>">
+            <tr id = "history_<?= h($history->id); ?>">
                 <td>
-                    <ul class = "history_box">
-                        <li class = "history-member-name"><?= h($history->member_name); ?></li>
-                        <li class = "history-type-name"><?= h($history->type_name); ?></li>
-                        <li class = "history_apply_date"><?= h($history->apply_date); ?></li>
-                        <li class = "history-arrival_time"><?= h($history->arrival_time); ?></li>
-                        <li class = "history-leaving_time"><?= h($history->leaving_time); ?></li>
-                        <li class = "history-comment"><?= h($history->reason); ?></li>
-                    </ul>
+                <hr>
+                    <table class = "history_box">
+                        <tr>
+                            <td class = "history-member-name"><?= h($history->member_name); ?></td>
+                        </tr><tr>
+                            <td class = "history-type-name"><?= h($history->type_name); ?></td>
+                        </tr><tr>
+                            <td class = "history-apply-date"><?= h($history->apply_date); ?></td>
+                        </tr><tr>
+                            <td class = "history-arrival-time"><?= h($history->arrival_time); ?></td>
+                        </tr><tr>
+                            <td class = "history-leaving-time"><?= h($history->leaving_time); ?></td>
+                        </tr><tr>
+                            <td class = "history-comment"><?= h($history->reason); ?></td>
+                        </tr>
+                    </table>
+                    <?php $history_show_count++; ?>
+                    <?php if( $history_show_count != 0 and $history_show_count % 10 == 0){echo '<div class="history-more">もっとみる</div>';} ?>
                 </td>
             </tr>
             <?php endforeach;?>
             <tr id="history_template">
                 <td>
                 <hr>
-                <ul class = "history_box1">
-                    <li class = "history-member-name"></li>
-                    <li class = "history-type-name"></li>
-                    <li class = "history-apply-date"></li>
-                    <li class = "history-arrival-time"></li>
-                    <li class = "history-leaving-time"></li>
-                    <li class = "history-comment"></li>
-                </ul>
+                <table class = "history_box">
+                    <tr>
+                        <td class = "history-member-name"></td>
+                    </tr><tr>
+                        <td class = "history-type-name"></td>
+                    </tr><tr>
+                        <td class = "history-apply-date"></td>
+                    </tr><tr>
+                        <td class = "history-arrival-time"></td>
+                    </tr><tr>
+                        <td class = "history-leaving-time"></td>
+                    </tr><tr>
+                        <td class = "history-comment"></td>
+                    </tr><tr>
+                        <td class = "history-superior-checked"></td>
+                    </tr>
+                </table>
                 </td>
             </tr>
         </table>
