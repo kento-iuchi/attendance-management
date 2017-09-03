@@ -35,6 +35,7 @@ class AttendanceDb{
         $histories_query = "
         SELECT
             H.id,
+            D.name as department_name,
             M.name as member_name,
             T.name as type_name,
             H.apply_date,
@@ -44,6 +45,8 @@ class AttendanceDb{
             H.superior_checked
         FROM
             histories H
+            INNER JOIN departments D
+                ON H.department_id = D.id
             INNER JOIN members M
                 ON H.member_id = M.id
             INNER JOIN types T
