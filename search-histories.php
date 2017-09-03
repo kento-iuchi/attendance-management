@@ -37,8 +37,8 @@ $histories = $attendanceDb->getHistories();
                     <?php endforeach; ?>
                 </select>
                 <p>
-                    <input type="date" name = "date_range_first" value="<?php echo date('Y-m-j');?>"/>から
-                    <input type="date" name = "date_range_last" value="<?php echo date('Y-m-j');?>"/>まで
+                    <input type="date" name = "date_range_first" value="<?php echo date('Y-m-01', strtotime(date('Y-m-1') . '-1 month'));?>"/>から
+                    <input type="date" name = "date_range_last" value="<?php echo date('Y-m-t', strtotime(date('Y-m-1') . '-1 month'));?>"/>まで
                 </p>
                 <input type="submit" value=" 検索する " />
             </form>
