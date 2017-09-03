@@ -40,7 +40,8 @@ class AttendanceDb{
             H.apply_date,
             TIME_FORMAT(H.arrival_time, '%H:%i') as arrival_time,
             TIME_FORMAT(H.leaving_time, '%H:%i') as leaving_time,
-            H.reason
+            H.reason,
+            H.superior_checked
         FROM
             histories H
             INNER JOIN members M
@@ -128,7 +129,8 @@ class AttendanceDb{
             'apply_date'   => $apply_date,
             'arrival_time' => $arrival_time,
             'leaving_time' => $leaving_time,
-            'comment'      => $comment
+            'comment'      => $comment,
+            'superior_checked' => $superior_checked
         ];
     }
 

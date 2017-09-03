@@ -107,6 +107,8 @@ $histories = $attendanceDb->getHistories();
                             <td class = "history-leaving-time"><?= h($history->leaving_time); ?></td>
                         </tr><tr>
                             <td class = "history-comment"><?= h($history->reason); ?></td>
+                        </tr><tr>
+                            <td class = "history-superior-checked"><?= h($history->superior_checked); ?></td>
                         </tr>
                     </table>
                     <?php $history_show_count++; ?>
