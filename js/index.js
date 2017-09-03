@@ -12,7 +12,7 @@ $(function(){
             $('input[name = leaving_time]').prop('readonly', true);
         }
     });
-    
+
     //入力修正時に確認画面閉じる
     $('#input-part').click(function(){
         $('#apply_content_preview').fadeOut(200);
@@ -27,13 +27,18 @@ $(function(){
         $('#preview-arrival-time').html($('input[name = arrival_time]').val());
         $('#preview-leaving-time').html($('input[name = leaving_time]').val());
         $('#preview-comment').html($('textarea[name = comment]').val());
+        if($('input[name = superior_checked]').prop('checked')){
+                $('#preview-superior-checked').text("確認済み");
+            }else {
+                $('#preview-superior-checked').text("いいえ");
+            }
     });
 
     //leave on histories
     $('#attendance-form').submit(function() {
         //フォームの中身を取得
         var form_inputs = $('#attendance-form').serialize();
-
+        console.log(form_inputs);
         $.post('_ajax.php', {
             input_data: form_inputs,
             mode: 'leave'

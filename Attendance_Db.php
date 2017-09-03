@@ -85,7 +85,8 @@ class AttendanceDb{
             apply_date,
             arrival_time,
             leaving_time,
-            reason
+            reason,
+            superior_checked
         )
         VALUES
         (
@@ -94,14 +95,21 @@ class AttendanceDb{
             :apply_date,
             :arrival_time,
             :leaving_time,
-            :reason
+            :reason,
+            :superior_checked
         )
         ";
 
         $stmt = $this->_db->prepare($sql_query);
+        if ($superior_checked == 'on'){
+            $superior_checked = 1;
+        }else {
+            $superior_checked = 0;
+        }
         $record_insert = array(':member_id'  => $member_id,    ':type_id'     => $type_id,
                                ':apply_date' => $apply_date,   ':arrival_time'=> $arrival_time,
-                               'leaving_time'=> $leaving_time, ':reason'      => $comment);
+                               ':leaving_time'=> $leaving_time, ':reason'      => $comment,
+                               ':superior_checked' => $superior_checked);
 
         $stmt->execute($record_insert);
         //以下戻り値の整備

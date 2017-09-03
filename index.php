@@ -50,6 +50,10 @@ $histories = $attendanceDb->getHistories();
                 コメント：
                 <textarea rows="3" cols="120" placeholder="理由などを入力してください" name = "comment"></textarea>
             </p>
+            <p>
+                上長確認済みならチェック
+                <input type="checkbox" name="superior_checked"/>
+            </p>
             </div>
             <p>
                 <button type="button" id="confirm-input">申請内容を確認する</button>
@@ -75,6 +79,9 @@ $histories = $attendanceDb->getHistories();
                         </tr>
                         <tr>
                             <td>コメント</td><td id="preview-comment"></td>
+                        </tr>
+                        <tr>
+                            <td>上長の確認</td><td id="preview-superior-checked"></td>
                         </tr>
                     </table></p>
                     <input type="submit" id="apply-button" value="申請する" />
