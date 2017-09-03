@@ -52,6 +52,8 @@ $histories = $attendanceDb->getHistories();
             </p>
             <p>
                 上長確認済みならチェック
+                <!-- 下の行は未チェック時disable扱いされSUBMITで送信されないのを防ぐため -->
+                <input type="hidden" name="superior_checked" value="0">
                 <input type="checkbox" name="superior_checked"/>
             </p>
             </div>

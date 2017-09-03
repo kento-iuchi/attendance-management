@@ -45,6 +45,13 @@ $(function(){
         }, function(res){
             $('#apply_content_preview').fadeOut(700);
             console.log('mode: [leave] return from _ajax.php : %s',JSON.stringify(res));
+
+            if(res.superior_checked == 1){
+                res.superior_checked = "確認済み";
+            }
+            else{
+                res.superior_checked = "いいえ";
+            }
             var $tr = $('#history_template').clone();
             $tr.attr('id', 'history_' + res.id)
             .find('.history-member-name')
