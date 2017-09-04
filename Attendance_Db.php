@@ -88,6 +88,7 @@ class AttendanceDb{
         INSERT INTO
             histories
         (
+            department_id,
             member_id,
             type_id,
             apply_date,
@@ -98,6 +99,7 @@ class AttendanceDb{
         )
         VALUES
         (
+            :department_id,
             :member_id,
             :type_id,
             :apply_date,
@@ -107,14 +109,17 @@ class AttendanceDb{
             :superior_checked
         )
         ";
-
+        ChromePhp::log($superior_checked);
+        ChromePhp::log($department_id);
         $stmt = $this->_db->prepare($sql_query);
         if ($superior_checked == 'on'){
             $superior_checked = 1;
+            $superior_check_comment = "確認済み";
         }else {
             $superior_checked = 0;
+            $superior_check_comment = "いいえ";
         }
-        $record_insert = array(':member_id'  => $member_id,    ':type_id'     => $type_id,
+        $record_insert = array(':department_id'  => $department_id,':member_id'  => $member_id,    ':type_id'     => $type_id,
                                ':apply_date' => $apply_date,   ':arrival_time'=> $arrival_time,
                                ':leaving_time'=> $leaving_time, ':reason'      => $comment,
                                ':superior_checked' => $superior_checked);
@@ -122,6 +127,9 @@ class AttendanceDb{
         $stmt->execute($record_insert);
         //以下戻り値の整備
         $id = $this->_db->lastInsertId();
+        $query_department_name = sprintf("SELECT name FROM departments where id = %d", $department_id);
+        $stmt = $this->_db->query($query_department_name);
+        $department_name = $stmt->fetchColumn();
         $query_member_name = sprintf("SELECT name FROM members where id = %d", $member_id);
         $stmt = $this->_db->query($query_member_name);
         $member_name = $stmt->fetchColumn();
@@ -129,15 +137,17 @@ class AttendanceDb{
         $stmt = $this->_db->query($query_type_name);
         $type_name = $stmt->fetchColumn();
 
+
         return [
             'id' => $id,
+            'department_name'=> $department_name,
             'member_name'  => $member_name,
             'type_name'    => $type_name,
             'apply_date'   => $apply_date,
             'arrival_time' => $arrival_time,
             'leaving_time' => $leaving_time,
             'comment'      => $comment,
-            'superior_checked' => $superior_checked
+            'superior_checked' => $superior_check_comment
         ];
     }
 

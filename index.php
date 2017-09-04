@@ -28,7 +28,6 @@ $histories = $attendanceDb->getHistories();
         <form action="" id="attendance-form">
             <div id = "input-part">
             <p>
-                <!-- 各select input のnameはそのままPHPでの変数名になる -->
                 部署：
                 <select name = "department_id">
                     <?php foreach ($departments as $department) : ?>
@@ -61,7 +60,7 @@ $histories = $attendanceDb->getHistories();
             <p>
                 上長確認済みならチェック
                 <!-- 下の行は未チェック時disable扱いされSUBMITで送信されないのを防ぐため -->
-                <input type="hidden" name="superior_checked" value="0">
+                <input type="hidden"   name="superior_checked" value="0">
                 <input type="checkbox" name="superior_checked"/>
             </p>
             </div>
@@ -109,6 +108,8 @@ $histories = $attendanceDb->getHistories();
                 <hr>
                     <table class = "history_box">
                         <tr>
+                            <td class = "history-department-name"><?= h($history->department_name); ?></td>
+                        </tr><tr>
                             <td class = "history-member-name"><?= h($history->member_name); ?></td>
                         </tr><tr>
                             <td class = "history-type-name"><?= h($history->type_name); ?></td>
@@ -134,6 +135,8 @@ $histories = $attendanceDb->getHistories();
                 <hr>
                 <table class = "history_box">
                     <tr>
+                        <td class = "history-department-name"></td>
+                    </tr><tr>
                         <td class = "history-member-name"></td>
                     </tr><tr>
                         <td class = "history-type-name"></td>

@@ -21,14 +21,14 @@ $(function(){
     //show input preview
     $('#confirm-input').click(function(){
         $('#apply_content_preview').fadeIn(700);
-        $('#preview-department').html($('select[name = member_id] :selected').text());
+        $('#preview-department').html($('select[name = department_id] :selected').text());
         $('#preview-name').html($('select[name = member_id] :selected').text());
         $('#preview-type').html($('select[name = type_id] :selected').text());
         $('#preview-date').html($('input[name = apply_date]').val());
         $('#preview-arrival-time').html($('input[name = arrival_time]').val());
         $('#preview-leaving-time').html($('input[name = leaving_time]').val());
         $('#preview-comment').html($('textarea[name = comment]').val());
-        if($('input[name = superior_checked]').prop('checked')){
+        if($('input[name = superior_checked][type = "checkbox"]').prop('checked')){
                 $('#preview-superior-checked').text("確認済み");
             }else {
                 $('#preview-superior-checked').text("いいえ");
@@ -53,9 +53,12 @@ $(function(){
             else{
                 res.superior_checked = "いいえ";
             }
+
             var $tr = $('#history_template').clone();
             $tr.attr('id', 'history_' + res.id)
-            .find('.history-member-name')
+            $tr.find('.history-department-name')
+            .html(res.department_name)
+            $tr.find('.history-member-name')
             .html(res.member_name)
             $tr.find('.history-type-name')
             .html(res.type_name);
