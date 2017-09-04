@@ -32,10 +32,6 @@ class AttendanceDb{
 
 
     public function getHistories() {
-        // $stmt = $this->_db->query("TRUNCATE TABLE histories");
-        // $stmt->execute();
-        // 上2行はテスト用
-        // 結合しちゃおう
         $histories_query = "
         SELECT
             H.id,
@@ -72,6 +68,8 @@ class AttendanceDb{
                 return $this->_leaveInHistories();
             case 'search':
                 return $this->_searchFromHistories();
+            case 'export':
+                return $this->_exportHistoriesToCsv();
         }
         //return $this->_leaveInHistories();
     }
@@ -213,6 +211,45 @@ class AttendanceDb{
         return $results;
     }
 
+
+    private function _exportHistoriesToCsv(){
+        //ここでは入力データが存在するかどうかのみチェック
+        if(!isset($_POST['export_conditions'])) {
+            throw new \Exception('[serach] input not set!');
+        }
+        //ChromePhp::log($_POST['search_conditions']);
+        parse_str($_POST['export_conditions']);//クエリ文字列を変数
+
+        ChromePhp::log($date_range_first);
+
+        $search_query = sprintf("
+        SELECT
+            M.name as member_name,
+            T.name as type_name,
+            COUNT(H.type_id) as type_count
+        FROM
+            histories H
+            	INNER JOIN members M
+            		ON H.member_id = M.id
+            	INNER JOIN types T
+                	ON H.type_id = T.id
+        WHERE
+            1 = 1
+            AND H.apply_date BETWEEN '%s' AND '%s'
+        GROUP BY
+        	H.member_id, H.type_id
+        ORDER BY
+        	H.member_id
+        ",  $date_range_first,  $date_range_last);
+
+        ChromePhp::log($search_query);
+        $stmt = $this->_db->query($search_query);
+        $export_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        ChromePhp::log($export_data);
+
+        return $results;
+    }
 }
 
 // public function post() {

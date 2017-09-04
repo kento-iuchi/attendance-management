@@ -23,7 +23,7 @@ $histories = $attendanceDb->getHistories();
     <script src="js/index.js"></script>
 </head>
 <body>
-    <a href="search-histories.php">勤怠履歴を検索する</a>
+    <a href="search-or-export-histories.php">勤怠履歴の検索／CSVの出力</a>
     <div id="container">
         <form action="" id="attendance-form">
             <div id = "input-part">
