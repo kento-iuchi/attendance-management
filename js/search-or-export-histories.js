@@ -40,14 +40,19 @@ $(function(){
 
     //指定期間の全休、半休、半半休をCSVに出力
     $('#csv-export-form').submit(function() {
+        console.log("通信開始");
         $.post('_ajax.php', {
             export_conditions: $('#csv-export-form').serialize(),
-            mode: 'export'
+            mode: 'export',
         }, function(res){
             console.log('かえってきたぞ');
             console.log(res);
-        }).always(function(){
-    
+        }, "json").fail(function(XMLHttpRequest, textStatus, errorThrown){
+            console.log('だめでした');
+            console.log("ajax通信に失敗しました");
+            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
+            console.log("textStatus     : " + textStatus);
+            console.log("errorThrown    : " + errorThrown.message);
         });
         return false;
     });

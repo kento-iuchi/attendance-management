@@ -1,5 +1,7 @@
 <?php
-//include 'php/ChromePhp.php';
+
+error_reporting(E_ALL);
+ini_set( 'error_reporting', E_ALL );
 
 class AttendanceDb{
     private $_db;
@@ -243,7 +245,7 @@ class AttendanceDb{
             $csv_filename = '/tmp/' .
                         $date_range_first . '---' . $date_range_last .
                         '.csv';
-            $f = fopen($csv_filename, w);
+            $f = fopen($csv_filename, 'w');
             if ($f === FALSE) {
                 throw new Exception('ファイルの書き込みに失敗しました。');
             }
@@ -253,10 +255,10 @@ class AttendanceDb{
 
             foreach ($export_data as $values) {
                 $append_row = array();
-                $append_row[] = $values[member_name];
-                $append_row[] = (int)$values[day_off];
-                $append_row[] = (int)$values[half_day_off];
-                $append_row[] = (int)$values[quarter_day_off];
+                $append_row[] = $values['member_name'];
+                $append_row[] = (int)$values['day_off'];
+                $append_row[] = (int)$values['half_day_off'];
+                $append_row[] = (int)$values['quarter_day_off'];
                 mb_convert_variables('SJIS', 'UTF-8', $append_row);
                 fputcsv($f, $append_row);
             }
