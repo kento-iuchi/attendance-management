@@ -1,5 +1,5 @@
 <?php
-
+include 'ChromePhp.php';
 error_reporting(E_ALL);
 ini_set( 'error_reporting', E_ALL );
 
@@ -242,10 +242,11 @@ class AttendanceDb{
         try {
             $temp_path = sys_get_temp_dir();
 
-            $csv_filename = '/tmp/' .
-                        $date_range_first . '---' . $date_range_last .
-                        '.csv';
-            $f = fopen($csv_filename, 'w');
+            $csv_filename = $date_range_first . '---' . $date_range_last . '.csv';
+            $csv_filepath= 'downloadable_csv/' . $csv_filename;
+            //ChromePhp::log($csv_filepath);
+
+            $f = fopen($csv_filepath, 'w');
             if ($f === FALSE) {
                 throw new Exception('ファイルの書き込みに失敗しました。');
             }
@@ -269,7 +270,21 @@ class AttendanceDb{
             return $e->getMessage();
         }
 
-        return $csv_filename;
+        // // ダウンロード開始
+		// header('Content-Type: application/octet-stream');
+        //
+		// // ここで渡されるファイルがダウンロード時のファイル名になる
+		// header('Content-Disposition: attachment; filename=' . $csv_filename);
+		// header('Content-Transfer-Encoding: binary');
+		// header('Content-Length: ' . filesize($csv_filepath));
+        //
+        // //ChromePhp::log(apache_response_headers());
+
+		//readfile($csv_filepath);
+
+        // $new_csv_filename = 'downloadable_csv/' . $date_range_first . '---' . $date_range_last . '.csv';
+        // copy( $csv_filename, $new_csv_filename);
+        return $csv_filepath;
     }
 
 

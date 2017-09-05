@@ -64,8 +64,11 @@ $(function(){
 
     $("#csv-download-button").on("click", function(e){
         var $target = $(e.target);
+        var $csvfilename = $csvfilepath.split('/');
+        $csvfilename = $csvfilename[$csvfilename.length -1];
+        console.log($csvfilename);
         $target.attr({
-            download: "file.csv",
+            download: $csvfilename,
             href:  $csvfilepath
         });
     });
