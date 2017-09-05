@@ -1,8 +1,6 @@
 $(function(){
     'use strict';
 
-    var $csvfilepath;
-
     //search from database
     $('#search-option-form').submit(function() {
         var search_form_inputs = $('#search-option-form').serialize();
@@ -48,10 +46,18 @@ $(function(){
             mode: 'export',
         }, function(res){
             //ダウンロードリンクを作る
-            //resにはcsvファイルのpathが入っている
-            $csvfilepath = res;
-            $('#csv-download-button').text(res);
             $('#csv-download-button').removeClass("hidden");
+            //resにはcsvファイルのpathが入っている
+            var $csvfilepath = res;
+            var $downloadlink = $('#csv-download-button');
+            var $csvfilename = $csvfilepath.split('/');
+            $csvfilename = $csvfilename[$csvfilename.length -1];// スラッシュ区切りの最後がファイル名
+
+            $downloadlink.attr({
+                download: $csvfilename,
+                href: $csvfilepath
+            });
+
         }, "json").fail(function(XMLHttpRequest, textStatus, errorThrown){
             console.log('だめでした');
             console.log("ajax通信に失敗しました");
@@ -62,14 +68,4 @@ $(function(){
         return false;
     });
 
-    $("#csv-download-button").on("click", function(e){
-        var $target = $(e.target);
-        var $csvfilename = $csvfilepath.split('/');
-        $csvfilename = $csvfilename[$csvfilename.length -1];
-        console.log($csvfilename);
-        $target.attr({
-            download: $csvfilename,
-            href:  $csvfilepath
-        });
-    });
 });

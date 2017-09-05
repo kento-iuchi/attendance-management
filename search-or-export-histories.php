@@ -58,7 +58,7 @@ $histories = $attendanceDb->getHistories();
                             <input type="submit" value="　出力する　" />
                     </form>
                     <p>
-                        <a id="csv-download-button" class="hidden">ダウンロードする</div>
+                        <a id="csv-download-button" class="hidden" href="">ダウンロードする</a>
                     </p>
                 </fieldset>
             </td>
