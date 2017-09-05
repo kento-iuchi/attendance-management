@@ -1,6 +1,8 @@
 $(function(){
     'use strict';
 
+    var $csvfilepath;
+
     //search from database
     $('#search-option-form').submit(function() {
         var search_form_inputs = $('#search-option-form').serialize();
@@ -45,8 +47,11 @@ $(function(){
             export_conditions: $('#csv-export-form').serialize(),
             mode: 'export',
         }, function(res){
-            console.log('かえってきたぞ');
-            console.log(res);
+            //ダウンロードリンクを作る
+            //resにはcsvファイルのpathが入っている
+            $csvfilepath = res;
+            $('#csv-download-button').text(res);
+            $('#csv-download-button').removeClass("hidden");
         }, "json").fail(function(XMLHttpRequest, textStatus, errorThrown){
             console.log('だめでした');
             console.log("ajax通信に失敗しました");
@@ -55,5 +60,13 @@ $(function(){
             console.log("errorThrown    : " + errorThrown.message);
         });
         return false;
+    });
+
+    $("#csv-download-button").on("click", function(e){
+        var $target = $(e.target);
+        $target.attr({
+            download: "file.csv",
+            href:  $csvfilepath
+        });
     });
 });

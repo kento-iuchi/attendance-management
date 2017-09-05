@@ -269,12 +269,7 @@ class AttendanceDb{
             return $e->getMessage();
         }
 
-        return [ 'csv_filename' => $csv_filename ];
-    }
-
-
-    function errHandler($errno, $errstr, $errfile, $errline){
-        throw new Exception($errstr, $errno);
+        return $csv_filename;
     }
 
 
