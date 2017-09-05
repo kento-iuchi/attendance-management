@@ -7,7 +7,7 @@ $(function(){
         if($selected_type.text() != '休み'){
             $('input[name = arrival_time]').prop('readonly', false);
             $('input[name = leaving_time]').prop('readonly', false);
-        }else {
+        } else {
             $('input[name = arrival_time]').prop('readonly', true);
             $('input[name = leaving_time]').prop('readonly', true);
         }
@@ -30,7 +30,7 @@ $(function(){
         $('#preview-comment').html($('textarea[name = comment]').val());
         if($('input[name = superior_checked][type = "checkbox"]').prop('checked')){
                 $('#preview-superior-checked').text("確認済み");
-            }else {
+            } else {
                 $('#preview-superior-checked').text("いいえ");
             }
     });
@@ -49,8 +49,7 @@ $(function(){
 
             if(res.superior_checked == 1){
                 res.superior_checked = "確認済み";
-            }
-            else{
+            } else {
                 res.superior_checked = "いいえ";
             }
 
@@ -72,6 +71,7 @@ $(function(){
             .html(res.comment);
             $tr.find('.history-superior-checked')
             .html(res.superior_checked);
+            
             console.log($tr);
             $('#histories > tbody').prepend($tr);
         });

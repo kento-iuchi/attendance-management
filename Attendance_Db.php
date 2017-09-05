@@ -1,5 +1,5 @@
 <?php
-include 'php/ChromePhp.php';
+//include 'php/ChromePhp.php';
 
 class AttendanceDb{
     private $_db;
@@ -107,8 +107,7 @@ class AttendanceDb{
             :superior_checked
         )
         ";
-        ChromePhp::log($superior_checked);
-        ChromePhp::log($department_id);
+
         $stmt = $this->_db->prepare($sql_query);
         if ($superior_checked == 'on'){
             $superior_checked = 1;
@@ -197,17 +196,10 @@ class AttendanceDb{
             AND H.apply_date BETWEEN '%s' AND '%s'
             {$additional_condition}
         ",  $date_range_first,  $date_range_last);
-        ChromePhp::log($search_query);
-        //AND histories.apply_date BETWEEN :first_date AND :last_date
+
         $stmt = $this->_db->query($search_query);
-        ChromePhp::log($stmt);
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        // ChromePhp::log($results);
-        // foreach ($results as $key => $value) {
-        //     ChromePhp::log($value);
-        // }
-        //以下戻り値の整備
-        //return $stmt;
+
         return $results;
     }
 
@@ -218,38 +210,72 @@ class AttendanceDb{
             throw new \Exception('[serach] input not set!');
         }
         //ChromePhp::log($_POST['search_conditions']);
-        parse_str($_POST['export_conditions']);//クエリ文字列を変数
-
-        ChromePhp::log($date_range_first);
+        parse_str($_POST['export_conditions']);//クエリ文字列を変数に変換
 
         $search_query = sprintf("
         SELECT
             M.name as member_name,
-            T.name as type_name,
-            COUNT(H.type_id) as type_count
+            COUNT(H.type_id = 1 or null) as day_off,
+            COUNT(H.type_id = 2 or null) as half_day_off,
+            COUNT(H.type_id = 3 or null) as quarter_day_off
         FROM
             histories H
             	INNER JOIN members M
             		ON H.member_id = M.id
-            	INNER JOIN types T
-                	ON H.type_id = T.id
         WHERE
             1 = 1
             AND H.apply_date BETWEEN '%s' AND '%s'
         GROUP BY
-        	H.member_id, H.type_id
+        	H.member_id
         ORDER BY
         	H.member_id
         ",  $date_range_first,  $date_range_last);
 
-        ChromePhp::log($search_query);
         $stmt = $this->_db->query($search_query);
         $export_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        ChromePhp::log($export_data);
+        //ChromePhp::log($export_data);
 
-        return $results;
+        //出力データの作成2
+        try {
+            $temp_path = sys_get_temp_dir();
+
+            $csv_filename = '/tmp/' .
+                        $date_range_first . '---' . $date_range_last .
+                        '.csv';
+            $f = fopen($csv_filename, w);
+            if ($f === FALSE) {
+                throw new Exception('ファイルの書き込みに失敗しました。');
+            }
+            $csv_title_row = ["氏名","全休","半休","半半休"];
+            mb_convert_variables('SJIS', 'UTF-8', $csv_title_row);
+            fputcsv($f, $csv_title_row);
+
+            foreach ($export_data as $values) {
+                $append_row = array();
+                $append_row[] = $values[member_name];
+                $append_row[] = (int)$values[day_off];
+                $append_row[] = (int)$values[half_day_off];
+                $append_row[] = (int)$values[quarter_day_off];
+                mb_convert_variables('SJIS', 'UTF-8', $append_row);
+                fputcsv($f, $append_row);
+            }
+            fclose($f);
+
+
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+
+        return [ 'csv_filename' => $csv_filename ];
     }
+
+
+    function errHandler($errno, $errstr, $errfile, $errline){
+        throw new Exception($errstr, $errno);
+    }
+
+
 }
 
 // public function post() {

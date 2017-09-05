@@ -40,14 +40,14 @@ $(function(){
 
     //指定期間の全休、半休、半半休をCSVに出力
     $('#csv-export-form').submit(function() {
-
-        console.log($('#csv-export-form').serialize());
-
         $.post('_ajax.php', {
             export_conditions: $('#csv-export-form').serialize(),
             mode: 'export'
         }, function(res){
-
+            console.log('かえってきたぞ');
+            console.log(res);
+        }).always(function(){
+    
         });
         return false;
     });

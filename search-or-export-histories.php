@@ -27,22 +27,22 @@ $histories = $attendanceDb->getHistories();
                     <legend>検索条件指定</legend>
                     <form action="" id="search-option-form">
                         名前：
-                        <select name = "member_id">
+                        <select name="member_id">
                                 <option value="all_member">指定しない</option>
                             <?php foreach ($members as $member) : ?>
                                 <option value="<?= h($member->id);?>"><?= h($member->name);?></option>
                             <?php endforeach; ?>
                         </select>
                         内容：
-                        <select name = "type_id">
+                        <select name="type_id">
                             <option value="all_type">指定しない</option>
                             <?php foreach ($types as $type) : ?>
                                 <option value="<?= h($type->id);?>"><?= h($type->name);?></option>
                             <?php endforeach; ?>
                         </select>
                         <p>
-                            <input type="date" name = "date_range_first" value="<?php echo date('Y-m-01', strtotime(date('Y-m-1') . '-1 month'));?>"/>から
-                            <input type="date" name = "date_range_last" value="<?php echo date('Y-m-t', strtotime(date('Y-m-1') . '-1 month'));?>"/>まで
+                            <input type="date" name="date_range_first" value="<?php echo date('Y-m-01', strtotime(date('Y-m-1') . '-1 month'));?>"/>から
+                            <input type="date" name="date_range_last" value="<?php echo date('Y-m-t', strtotime(date('Y-m-1') . '-1 month'));?>"/>まで
                         </p>
                         <input type="submit" value=" 検索する " />
                     </form>
@@ -52,8 +52,8 @@ $histories = $attendanceDb->getHistories();
                     <legend>有給取得状況をCSVファイルに出力</legend>
                     <form action="" id="csv-export-form">
                         <p>
-                            <input type="date" name = "date_range_first" value="<?php echo date('Y-m-01', strtotime(date('Y-m-1') . '-1 month'));?>"/>から
-                            <input type="date" name = "date_range_last" value="<?php echo date('Y-m-t', strtotime(date('Y-m-1') . '-1 month'));?>"/>まで
+                            <input type="date" name="date_range_first" value="<?php echo date('Y-m-01', strtotime(date('Y-m-1') . '-1 month'));?>"/>から
+                            <input type="date" name="date_range_last" value="<?php echo date('Y-m-t', strtotime(date('Y-m-1') . '-1 month'));?>"/>まで
                         </p>
                         <input type="submit" value="　出力する　" />
                     </form>
@@ -73,12 +73,12 @@ $histories = $attendanceDb->getHistories();
                     <td>
                     <hr>
                     <ul>
-                        <li class = "result-member-name"></li>
-                        <li class = "result-type-name"></li>
-                        <li class = "result-apply-date"></li>
-                        <li class = "result-arrival-time"></li>
-                        <li class = "result-leaving-time"></li>
-                        <li class = "result-comment"></li>
+                        <li class="result-member-name"></li>
+                        <li class="result-type-name"></li>
+                        <li class="result-apply-date"></li>
+                        <li class="result-arrival-time"></li>
+                        <li class="result-leaving-time"></li>
+                        <li class="result-comment"></li>
                     </ul>
                     </td>
                 </tr>
