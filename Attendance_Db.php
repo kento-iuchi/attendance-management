@@ -241,8 +241,10 @@ class AttendanceDb{
         //出力データの作成2
         try {
             $temp_path = sys_get_temp_dir();
-
-            $csv_filename = $date_range_first . '---' . $date_range_last . '.csv';
+            $csv_filename = sprintf('%s__%s$%s.csv',
+                            $date_range_first,
+                            $date_range_last,
+                            sha1(uniqid(mt_rand(), true)));
             $csv_filepath= 'downloadable_csv/' . $csv_filename;
             //ChromePhp::log($csv_filepath);
 

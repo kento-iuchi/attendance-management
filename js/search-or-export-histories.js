@@ -45,13 +45,14 @@ $(function(){
             export_conditions: $('#csv-export-form').serialize(),
             mode: 'export',
         }, function(res){
-            //ダウンロードリンクを作る
+            //ダウンロードリンクを作る 本当はリンクを作らず即ダウンロードさせたい
             $('#csv-download-button').removeClass("hidden");
             //resにはcsvファイルのpathが入っている
             var $csvfilepath = res;
             var $downloadlink = $('#csv-download-button');
             var $csvfilename = $csvfilepath.split('/');
             $csvfilename = $csvfilename[$csvfilename.length -1];// スラッシュ区切りの最後がファイル名
+            $csvfilename = $csvfilename.split('$')[0] + '.csv';//$以下のランダム文字列を消す
 
             $downloadlink.attr({
                 download: $csvfilename,
