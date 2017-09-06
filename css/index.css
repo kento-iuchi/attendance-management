@@ -5,3 +5,10 @@
 #history_template {
     display: none;
 }
+
+.history-more {
+    border-width: 6px;
+    border-radius: 12px;
+    border-color: #045FB4;
+    background: #2E9AFE;
+}

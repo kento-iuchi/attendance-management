@@ -71,7 +71,7 @@ $(function(){
             .html(res.comment);
             $tr.find('.history-superior-checked')
             .html(res.superior_checked);
-            
+
             console.log($tr);
             $('#histories > tbody').prepend($tr);
         });

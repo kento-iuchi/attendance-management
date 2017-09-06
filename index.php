@@ -122,7 +122,9 @@ $histories = $attendanceDb->getHistories();
                         </tr><tr>
                             <td class="history-comment"><?= h($history->reason); ?></td>
                         </tr><tr>
-                            <td class="history-superior-checked"><?= h($history->superior_checked); ?></td>
+                            <td class="history-superior-checked">
+                                <?php if($history->superior_checked == 1){echo "確認済み";} else {echo "いいえ";}?>
+                            </td>
                         </tr>
                     </table>
                     <?php $history_show_count++; ?>
