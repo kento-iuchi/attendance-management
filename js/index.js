@@ -4,6 +4,7 @@ $(function(){
     //休みを選んだら時間をインアクティブに
     $('select[name = type_id]').change(function(){
         var $selected_type = $('option:selected',this);
+
         if($selected_type.text() != '休み'){
             $('input[name = arrival_time]').prop('readonly', false);
             $('input[name = leaving_time]').prop('readonly', false);
@@ -13,14 +14,16 @@ $(function(){
         }
     });
 
-    //入力修正時に確認画面閉じる
+    //入力修正時（確認画面表示中に入力フォームのどこかをクリック）
+    //確認＆送信を非表示にする
     $('#input-part').click(function(){
-        $('#apply_content_preview').fadeOut(200);
+        $('#post_content_preview').fadeOut(200);
     });
 
-    //show input preview
+    //送信内容確認画面を表示
     $('#confirm-input').click(function(){
-        $('#apply_content_preview').fadeIn(700);
+        $('#post_content_preview').fadeIn(700);
+
         $('#preview-department').html($('select[name = department_id] :selected').text());
         $('#preview-name').html($('select[name = member_id] :selected').text());
         $('#preview-type').html($('select[name = type_id] :selected').text());
@@ -35,17 +38,16 @@ $(function(){
             }
     });
 
-    //leave on histories
+    //送信内容を履歴に残す
     $('#attendance-form').submit(function() {
-        //フォームの中身を取得
         var form_inputs = $('#attendance-form').serialize();
-        console.log(form_inputs);
+
         $.post('_ajax.php', {
             input_data: form_inputs,
             mode: 'leave'
         }, function(res){
-            $('#apply_content_preview').fadeOut(700);
-            console.log('mode: [leave] return from _ajax.php : %s',JSON.stringify(res));
+            $('#post_content_preview').fadeOut(700);
+            //console.log('mode: [leave] return from _ajax.php : %s',JSON.stringify(res));
 
             if(res.superior_checked == 1){
                 res.superior_checked = "確認済み";
@@ -53,6 +55,7 @@ $(function(){
                 res.superior_checked = "いいえ";
             }
 
+            //履歴テーブルに追加する要素を作成
             var $tr = $('#history_template').clone();
             $tr.attr('id', 'history_' + res.id)
             $tr.find('.history-department-name')
@@ -72,7 +75,6 @@ $(function(){
             $tr.find('.history-superior-checked')
             .html(res.superior_checked);
 
-            console.log($tr);
             $('#histories > tbody').prepend($tr);
         });
         return false;
