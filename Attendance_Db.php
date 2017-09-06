@@ -1,5 +1,4 @@
 <?php
-include 'ChromePhp.php';
 error_reporting(E_ALL);
 ini_set( 'error_reporting', E_ALL );
 
@@ -16,10 +15,12 @@ class AttendanceDb{
         }
     }
 
+
     public function getDepartments() {
         $stmt = $this->_db->query("SELECT * FROM departments ORDER BY id");
         return $stmt->fetchAll(\PDO::FETCH_OBJ);
     }
+
 
     public function getMembers() {
         $stmt = $this->_db->query("SELECT * FROM members ORDER BY id");
@@ -73,16 +74,15 @@ class AttendanceDb{
             case 'export':
                 return $this->_exportHistoriesToCsv();
         }
-        //return $this->_leaveInHistories();
+
     }
 
 
     private function _leaveInHistories(){
-        //ここでは入力データが存在するかどうかのみチェック
         if(!isset($_POST['input_data'])) {
             throw new \Exception('[leave] input not set!');
         }
-        parse_str($_POST['input_data']);//inputsのクエリ文字列を変数に
+        parse_str($_POST['input_data']);//inputsのクエリ文字列を変数に変換する
 
         $sql_query = "
         INSERT INTO
@@ -118,20 +118,23 @@ class AttendanceDb{
             $superior_checked = 0;
             $superior_check_comment = "いいえ";
         }
-        $record_insert = array(':department_id'  => $department_id,':member_id'  => $member_id,    ':type_id'     => $type_id,
-                               ':apply_date' => $apply_date,   ':arrival_time'=> $arrival_time,
-                               ':leaving_time'=> $leaving_time, ':reason'      => $comment,
-                               ':superior_checked' => $superior_checked);
+        $record_insert = array(':department_id' => $department_id,':member_id'   => $member_id,
+                               ':type_id'       => $type_id,      ':apply_date'  => $apply_date,
+                               ':arrival_time'  => $arrival_time, ':leaving_time'=> $leaving_time,
+                               ':reason'        => $comment,      ':superior_checked' => $superior_checked);
 
         $stmt->execute($record_insert);
         //以下戻り値の整備
         $id = $this->_db->lastInsertId();
+
         $query_department_name = sprintf("SELECT name FROM departments where id = %d", $department_id);
         $stmt = $this->_db->query($query_department_name);
         $department_name = $stmt->fetchColumn();
+
         $query_member_name = sprintf("SELECT name FROM members where id = %d", $member_id);
         $stmt = $this->_db->query($query_member_name);
         $member_name = $stmt->fetchColumn();
+
         $query_type_name = sprintf("SELECT name FROM types where id = %d", $type_id);
         $stmt = $this->_db->query($query_type_name);
         $type_name = $stmt->fetchColumn();
@@ -139,25 +142,24 @@ class AttendanceDb{
 
         return [
             'id' => $id,
-            'department_name'=> $department_name,
-            'member_name'  => $member_name,
-            'type_name'    => $type_name,
-            'apply_date'   => $apply_date,
-            'arrival_time' => $arrival_time,
-            'leaving_time' => $leaving_time,
-            'comment'      => $comment,
+            'department_name'  => $department_name,
+            'member_name'      => $member_name,
+            'type_name'        => $type_name,
+            'apply_date'       => $apply_date,
+            'arrival_time'     => $arrival_time,
+            'leaving_time'     => $leaving_time,
+            'comment'          => $comment,
             'superior_checked' => $superior_check_comment
         ];
     }
 
 
     private function _searchFromHistories(){
-        //ここでは入力データが存在するかどうかのみチェック
         if(!isset($_POST['search_conditions'])) {
             throw new \Exception('[serach] input not set!');
         }
-        //ChromePhp::log($_POST['search_conditions']);
-        parse_str($_POST['search_conditions']);//クエリ文字列を変数
+
+        parse_str($_POST['search_conditions']);
 
         //検索条件の設定
         //メンバーもタイプも指定しない
@@ -174,8 +176,7 @@ class AttendanceDb{
         }
         //メンバーも種類も指定
         if( $member_id != "all_member" && $type_id != "all_type" ){
-            $additional_condition = sprintf(" AND member_id = %d AND type_id = %d",
-                                            $member_id, $type_id);
+            $additional_condition = sprintf(" AND member_id = %d AND type_id = %d", $member_id, $type_id);
         }
 
         $search_query = sprintf("
@@ -207,11 +208,10 @@ class AttendanceDb{
 
 
     private function _exportHistoriesToCsv(){
-        //ここでは入力データが存在するかどうかのみチェック
         if(!isset($_POST['export_conditions'])) {
             throw new \Exception('[serach] input not set!');
         }
-        //ChromePhp::log($_POST['search_conditions']);
+
         parse_str($_POST['export_conditions']);//クエリ文字列を変数に変換
 
         $search_query = sprintf("
@@ -236,7 +236,6 @@ class AttendanceDb{
         $stmt = $this->_db->query($search_query);
         $export_data = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        //ChromePhp::log($export_data);
 
         //出力データの作成2
         try {
@@ -246,7 +245,6 @@ class AttendanceDb{
                             $date_range_last,
                             sha1(uniqid(mt_rand(), true)));
             $csv_filepath= 'downloadable_csv/' . $csv_filename;
-            //ChromePhp::log($csv_filepath);
 
             $f = fopen($csv_filepath, 'w');
             if ($f === FALSE) {
@@ -272,35 +270,10 @@ class AttendanceDb{
             return $e->getMessage();
         }
 
-        // // ダウンロード開始
-		// header('Content-Type: application/octet-stream');
-        //
-		// // ここで渡されるファイルがダウンロード時のファイル名になる
-		// header('Content-Disposition: attachment; filename=' . $csv_filename);
-		// header('Content-Transfer-Encoding: binary');
-		// header('Content-Length: ' . filesize($csv_filepath));
-        //
-        // //ChromePhp::log(apache_response_headers());
+        //できればここでダウンロードさせたい
 
-		// readfile($csv_filepath);
-
-        // $new_csv_filename = 'downloadable_csv/' . $date_range_first . '---' . $date_range_last . '.csv';
-        // copy( $csv_filename, $new_csv_filename);
         return $csv_filepath;
     }
 
 
 }
-
-// public function post() {
-//     if (!isset($_POST['mode'])) {
-//         throw new \Exception('mode not set!');
-//     }
-//     echo $_POST['mode'], __LINE__;
-//     switch ($_POST['mode']) {
-//         case 'leave':
-//             return $this->_leaveInHistories();
-//         case 'delete':
-//             return $this->_deleteFromHistories();
-//     }
-// }

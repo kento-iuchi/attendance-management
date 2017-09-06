@@ -3,29 +3,32 @@ require_once(__DIR__ . '/config.php');
 require_once(__DIR__ . '/functions.php');
 require_once(__DIR__ . '/Attendance_Db.php');
 
-//create reference to database
+//データベースへの参照
 $attendanceDb = new AttendanceDb();
 $departments = $attendanceDb->getDepartments();
 $members = $attendanceDb->getMembers();
 $types = $attendanceDb->getTypes();
 $histories = $attendanceDb->getHistories();
 
-//var_dump($members);
-
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <title>勤怠管理</title>
+    <title>
+              勤怠管理  </title>
+
     <link rel="stylesheet" href="css/index.css">
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/index.js"></script>
+
 </head>
 <body>
-    <a href="search-or-export-histories.php">勤怠履歴の検索／CSVの出力</a>
     <div id="container">
+        <a href="search-or-export-histories.php">勤怠履歴の検索／CSVの出力</a>
+
         <form action="" id="attendance-form">
+            <!-- 送信内容入力部 -->
             <div id="input-part">
             <p>
                 部署：
@@ -64,12 +67,16 @@ $histories = $attendanceDb->getHistories();
                 <input type="checkbox" name="superior_checked"/>
             </p>
             </div>
+            <!-- 送信内容入力部 -->
+
             <p>
-                <button type="button" id="confirm-input">申請内容を確認する</button>
+                <button type="button" id="confirm-input">送信内容を確認する</button>
             </p>
+
+            <!-- 送信内容確認 -->
             <p>
-                <fieldset id="apply_content_preview" class="hidden">
-                    <legend>申請内容確認</legend>
+                <fieldset id="post_content_preview" class="hidden">
+                    <legend>送信内容確認</legend>
                     <p><table>
                         <tr>
                             <td>部署</td><td id="preview-department"></td>
@@ -93,13 +100,16 @@ $histories = $attendanceDb->getHistories();
                             <td>コメント</td><td id="preview-comment"></td>
                         </tr>
                         <tr>
-                            <td>上長の確認</td><td id="preview-superior-checked"></td>
+                            <td>上長確認</td><td id="preview-superior-checked"></td>
                         </tr>
                     </table></p>
-                    <input type="submit" id="apply-button" value="申請する" />
+                    <input type="submit" id="apply-button" value="送信する" />
                 </fieldset>
             </p>
+            <!-- 送信内容確認 -->
+
         </form>
+        <!-- 送信履歴 -->
         <table id="histories">
             <?php $history_show_count =0; ?>
             <?php foreach (array_reverse($histories) as $history) :?>
@@ -108,21 +118,21 @@ $histories = $attendanceDb->getHistories();
                 <hr>
                     <table class="history_box">
                         <tr>
-                            <td class="history-department-name"><?= h($history->department_name); ?></td>
+                            <td>部署</td><td class="history-department-name"><?= h($history->department_name); ?></td>
                         </tr><tr>
-                            <td class="history-member-name"><?= h($history->member_name); ?></td>
+                            <td>名前</td><td class="history-member-name"><?= h($history->member_name); ?></td>
                         </tr><tr>
-                            <td class="history-type-name"><?= h($history->type_name); ?></td>
+                            <td>内容</td><td class="history-type-name"><?= h($history->type_name); ?></td>
                         </tr><tr>
-                            <td class="history-apply-date"><?= h($history->apply_date); ?></td>
+                            <td>対象日</td><td class="history-apply-date"><?= h($history->apply_date); ?></td>
                         </tr><tr>
-                            <td class="history-arrival-time"><?= h($history->arrival_time); ?></td>
+                            <td>出社時間</td><td class="history-arrival-time"><?= h($history->arrival_time); ?></td>
                         </tr><tr>
-                            <td class="history-leaving-time"><?= h($history->leaving_time); ?></td>
+                            <td>退社時間</td><td class="history-leaving-time"><?= h($history->leaving_time); ?></td>
                         </tr><tr>
-                            <td class="history-comment"><?= h($history->reason); ?></td>
+                            <td>コメント</td><td class="history-comment"><?= h($history->reason); ?></td>
                         </tr><tr>
-                            <td class="history-superior-checked">
+                            <td>上長確認</td><td class="history-superior-checked">
                                 <?php if($history->superior_checked == 1){echo "確認済み";} else {echo "いいえ";}?>
                             </td>
                         </tr>
@@ -139,26 +149,27 @@ $histories = $attendanceDb->getHistories();
                 <hr>
                 <table class="history_box">
                     <tr>
-                        <td class="history-department-name"></td>
+                        <td>部署</td><td class="history-department-name"></td>
                     </tr><tr>
-                        <td class="history-member-name"></td>
+                        <td>名前</td><td class="history-member-name"></td>
                     </tr><tr>
-                        <td class="history-type-name"></td>
+                        <td>内容</td><td class="history-type-name"></td>
                     </tr><tr>
-                        <td class="history-apply-date"></td>
+                        <td>対象日</td><td class="history-apply-date"></td>
                     </tr><tr>
-                        <td class="history-arrival-time"></td>
+                        <td>出社時間</td><td class="history-arrival-time"></td>
                     </tr><tr>
-                        <td class="history-leaving-time"></td>
+                        <td>退社時間</td><td class="history-leaving-time"></td>
                     </tr><tr>
-                        <td class="history-comment"></td>
+                        <td>コメント</td><td class="history-comment"></td>
                     </tr><tr>
-                        <td class="history-superior-checked"></td>
+                        <td>上長確認</td><td class="history-superior-checked"></td>
                     </tr>
                 </table>
                 </td>
             </tr>
         </table>
+        <!-- 送信履歴 -->
     </div>
 </body>
 </html>
