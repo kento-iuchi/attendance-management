@@ -261,18 +261,21 @@ class AttendanceDb{
             if ($f === FALSE) {
                 throw new \Exception ('ファイルの書き込みに失敗しました。');
             }
-            $csv_title_row = array("氏名","全休","半休","半半休");
+            $csv_title_row = array("氏名","全休","半休","半半休","合計日数");
             mb_convert_variables('SJIS', 'UTF-8', $csv_title_row);
             fputcsv($f, $csv_title_row);
 
+            $csv_rn = 2; // csv_row_number
             foreach ($export_data as $values) {
                 $append_row = array();
                 $append_row[] = $values['member_name'];
                 $append_row[] = (int)$values['day_off'];
                 $append_row[] = (int)$values['half_day_off'];
                 $append_row[] = (int)$values['quarter_day_off'];
+                $append_row[] = "=B$csv_rn*1+C$csv_rn*0.5+D$csv_rn*0.25";
                 mb_convert_variables('SJIS', 'UTF-8', $append_row);
                 fputcsv($f, $append_row);
+                $csv_rn++;
             }
             fclose($f);
 
