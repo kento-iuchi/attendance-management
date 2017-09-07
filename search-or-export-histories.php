@@ -2,7 +2,7 @@
 $cwd = getcwd();
 require_once($cwd . '/setup.php');
 
-//create reference to database
+//データベースへの参照
 $attendanceDb = new AttendanceDb();
 $members = $attendanceDb->getMembers();
 $types = $attendanceDb->getTypes();
@@ -75,6 +75,7 @@ $histories = $attendanceDb->getHistories();
                     <td>
                     <hr>
                     <ul>
+                        <li class="result-department-name"></li>
                         <li class="result-member-name"></li>
                         <li class="result-type-name"></li>
                         <li class="result-apply-date"></li>

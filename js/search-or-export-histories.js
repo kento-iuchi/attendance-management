@@ -17,9 +17,11 @@ $(function(){
             $.each(res, function($results_id, $results_content){
                 console.log($results_content);
                 var $tr = $('#search-result-template').clone();
-                $tr.attr('id', 'result_' + $results_content.id)
-                $tr.attr('class', 'added-search-result')
-                .find('.result-member-name')
+                $tr.attr('id', 'result_' + $results_content.id);
+                $tr.attr('class', 'added-search-result');
+                $tr.find('.result-department-name')
+                .html($results_content.department_name)
+                $tr.find('.result-member-name')
                 .html($results_content.member_name)
                 $tr.find('.result-type-name')
                 .html($results_content.type_name);
