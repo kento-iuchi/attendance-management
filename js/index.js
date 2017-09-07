@@ -47,7 +47,6 @@ $(function(){
             mode: 'leave'
         }, function(res){
             $('#post_content_preview').fadeOut(700);
-            //console.log('mode: [leave] return from _ajax.php : %s',JSON.stringify(res));
 
             if(res.superior_checked == 1){
                 res.superior_checked = "確認済み";
@@ -80,4 +79,6 @@ $(function(){
         return false;
     });
 
+    //もっと見る
+    
 });

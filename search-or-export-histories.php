@@ -1,7 +1,6 @@
 <?php
-require_once(__DIR__ . '/config.php');
-require_once(__DIR__ . '/functions.php');
-require_once(__DIR__ . '/Attendance_Db.php');
+$cwd = getcwd();
+require_once($cwd . '/setup.php');
 
 //create reference to database
 $attendanceDb = new AttendanceDb();
