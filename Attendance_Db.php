@@ -7,9 +7,10 @@ class AttendanceDb{
 
     public function __construct() {
         try {
-            $this->_db = new \PDO(DSN, DB_USERNAME, DB_PASSWORD);
-            $this->_db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
-        } catch (\PDOException $e) {
+            $this->_db = new PDO(DSN, DB_USERNAME, DB_PASSWORD);
+            $this->_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->_db->query("SET NAMES utf8");
+        } catch (PDOException $e) {
             echo $e->getMessage();
             exit;
         }
@@ -18,19 +19,19 @@ class AttendanceDb{
 
     public function getDepartments() {
         $stmt = $this->_db->query("SELECT * FROM departments ORDER BY id");
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
 
     public function getMembers() {
         $stmt = $this->_db->query("SELECT * FROM members ORDER BY id");
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
 
     public function getTypes() {
         $stmt = $this->_db->query("SELECT * FROM types ORDER BY id");
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
 
@@ -58,13 +59,13 @@ class AttendanceDb{
             H.id
             ";
         $stmt = $this->_db->query($histories_query);
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
 
     public function post() {
         if (!isset($_POST['mode'])) {
-            throw new \Exception('mode not set!');
+            throw new Exception('mode not set!');
         }
         switch ($_POST['mode']) {
             case 'leave':
@@ -80,7 +81,7 @@ class AttendanceDb{
 
     private function _leaveInHistories(){
         if(!isset($_POST['input_data'])) {
-            throw new \Exception('[leave] input not set!');
+            throw new Exception('[leave] input not set!');
         }
         parse_str($_POST['input_data']);//inputsのクエリ文字列を変数に変換する
 
@@ -140,7 +141,7 @@ class AttendanceDb{
         $type_name = $stmt->fetchColumn();
 
 
-        return [
+        return array(
             'id' => $id,
             'department_name'  => $department_name,
             'member_name'      => $member_name,
@@ -150,13 +151,13 @@ class AttendanceDb{
             'leaving_time'     => $leaving_time,
             'comment'          => $comment,
             'superior_checked' => $superior_check_comment
-        ];
+        );
     }
 
 
     private function _searchFromHistories(){
         if(!isset($_POST['search_conditions'])) {
-            throw new \Exception('[serach] input not set!');
+            throw new Exception('[serach] input not set!');
         }
 
         parse_str($_POST['search_conditions']);
@@ -209,7 +210,7 @@ class AttendanceDb{
 
     private function _exportHistoriesToCsv(){
         if(!isset($_POST['export_conditions'])) {
-            throw new \Exception('[serach] input not set!');
+            throw new Exception('[serach] input not set!');
         }
 
         parse_str($_POST['export_conditions']);//クエリ文字列を変数に変換
@@ -250,7 +251,7 @@ class AttendanceDb{
             if ($f === FALSE) {
                 throw new Exception('ファイルの書き込みに失敗しました。');
             }
-            $csv_title_row = ["氏名","全休","半休","半半休"];
+            $csv_title_row = array("氏名","全休","半休","半半休");
             mb_convert_variables('SJIS', 'UTF-8', $csv_title_row);
             fputcsv($f, $csv_title_row);
 

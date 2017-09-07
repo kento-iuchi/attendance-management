@@ -1,9 +1,8 @@
 <?php
-require_once(__DIR__ . '/config.php');
-require_once(__DIR__ . '/functions.php');
-require_once(__DIR__ . '/Attendance_Db.php');
+$cwd = getcwd();
+require_once($cwd . '/setup.php');
 
-//データベースへの参照
+// データベースへの参照
 $attendanceDb = new AttendanceDb();
 $departments = $attendanceDb->getDepartments();
 $members = $attendanceDb->getMembers();
@@ -15,8 +14,7 @@ $histories = $attendanceDb->getHistories();
 <html lang="ja">
 <head>
     <meta charset="utf-8">
-    <title>
-              勤怠管理  </title>
+    <title> 勤怠管理 </title>
 
     <link rel="stylesheet" href="css/index.css">
     <script src="js/jquery-3.2.1.min.js"></script>
