@@ -21,7 +21,11 @@ $histories = $attendanceDb->getHistories();
 </head>
 <body>
     <div id="container">
-        <span><a href="search-or-export-histories.php">勤怠履歴の検索／CSVの出力</a></span>
+        <div class="clearfix">
+            <div id="head-menu-left"><a href="search-or-export-histories.php">勤怠履歴の検索／CSVの出力</a></div>
+            <div id="head-menu-center"></div>
+            <div id="head-menu-right">データベースの管理</div>
+        </div>
 
         <form action="" id="attendance-form">
             <!-- 送信内容入力部 -->

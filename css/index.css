@@ -1,3 +1,25 @@
+#head-menu-left {
+    float: left;
+    width: 20%;
+}
+
+#head-menu-center {
+    float: left;
+    width: 60%;
+}
+
+#head-menu-right{
+    float: right;
+    width: 20%;
+    text-align: right;
+}
+
+.clearfix::after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
 #input-part-top-stair {
     margin: 5px;
 }
