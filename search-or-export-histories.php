@@ -13,11 +13,11 @@ $histories = $attendanceDb->getHistories();
 <!DOCTYPE html>
 <html lang="ja">
     <head>
-        <meta charset="utf-8">
-        <title>勤怠履歴の検索</title>
-        <link rel="stylesheet" href="css/search-or-export-histories.css">
         <script src="js/jquery-3.2.1.min.js"></script>
         <script src="js/search-or-export-histories.js"></script>
+        <link rel="stylesheet" href="css/search-or-export-histories.css">
+        <meta charset="utf-8">
+        <title>勤怠履歴の検索</title>
     </head>
     <body>
         <table>

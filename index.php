@@ -13,13 +13,11 @@ $histories = $attendanceDb->getHistories();
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="utf-8">
-    <title> 勤怠管理 </title>
-
-    <link rel="stylesheet" href="css/index.css">
     <script src="js/jquery-3.2.1.min.js"></script>
     <script src="js/index.js"></script>
-
+    <link rel="stylesheet" href="css/index.css">
+    <meta charset="utf-8">
+    <title> 勤怠管理 </title>
 </head>
 <body>
     <div id="container">
