@@ -26,19 +26,19 @@ class AttendanceDb{
 
     public function getDepartments() {
         $stmt = $this->_db->query("SELECT * FROM departments ORDER BY id");
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
 
     public function getMembers() {
         $stmt = $this->_db->query("SELECT * FROM members ORDER BY id");
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
 
     public function getTypes() {
         $stmt = $this->_db->query("SELECT * FROM types ORDER BY id");
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
 
@@ -66,7 +66,7 @@ class AttendanceDb{
             H.id
             ";
         $stmt = $this->_db->query($histories_query);
-        return $stmt->fetchAll(\PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
 
 
