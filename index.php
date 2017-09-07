@@ -139,9 +139,10 @@ $histories = $attendanceDb->getHistories();
                     </table>
                     <?php $history_show_count++; ?>
                     <?php if( $history_show_count != 0 and $history_show_count % 10 == 0):?>
-                        <div class="history-more">もっとみる</div>
+                        <div class="history-more">もっとみる（みたいなボタン作りたいよね）</div>
                     <?php endif; ?>
                 </td>
+                <td><button class="history-delete">削除</button></td>
             </tr>
             <?php endforeach;?>
             <tr id="history_template">

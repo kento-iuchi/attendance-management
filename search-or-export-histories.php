@@ -49,7 +49,7 @@ $histories = $attendanceDb->getHistories();
             </td><td>
                 <fieldset>
                     <legend>有給取得状況をCSVファイルに出力</legend>
-                    <form action="" id="csv-export-form">
+                    <form action="export-csv.php" id="csv-export-form" method="post">
                         <p>
                             <input type="date" name="date_range_first" value="<?php echo date('Y-m-01', strtotime(date('Y-m-1') . '-1 month'));?>"/>から
                             <input type="date" name="date_range_last" value="<?php echo date('Y-m-t', strtotime(date('Y-m-1') . '-1 month'));?>"/>まで

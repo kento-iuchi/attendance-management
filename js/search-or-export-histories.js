@@ -41,35 +41,4 @@ $(function(){
         return false;
     });
 
-
-    //指定期間の全休、半休、半半休をCSVに出力
-    $('#csv-export-form').submit(function() {
-        console.log("通信開始");
-        $.post('_ajax.php', {
-            export_conditions: $('#csv-export-form').serialize(),
-            mode: 'export',
-        }, function(res){
-            //ダウンロードリンクを作る 本当はリンクを作らず即ダウンロードさせたい
-            $('#csv-download-button').removeClass("hidden");
-            //resにはcsvファイルのpathが入っている
-            var $csvfilepath = res;
-            var $downloadlink = $('#csv-download-button');
-            var $csvfilename = $csvfilepath.split('/');
-            $csvfilename = $csvfilename[$csvfilename.length -1];// スラッシュ区切りの最後がファイル名
-            $csvfilename = $csvfilename.split('$')[0] + '.csv';//$以下のランダム文字列を消す
-
-            $downloadlink.attr({
-                download: $csvfilename,
-                href: $csvfilepath
-            });
-
-        }, "json").fail(function(XMLHttpRequest, textStatus, errorThrown){
-            console.log("ajax通信に失敗しました");
-            console.log("XMLHttpRequest : " + XMLHttpRequest.status);
-            console.log("textStatus     : " + textStatus);
-            console.log("errorThrown    : " + errorThrown.message);
-        });
-        return false;
-    });
-
 });

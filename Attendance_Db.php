@@ -1,4 +1,5 @@
 <?php
+//include 'ChromePhp.php';
 error_reporting(E_ALL);
 ini_set( 'error_reporting', E_ALL );
 
@@ -218,12 +219,7 @@ class AttendanceDb{
     }
 
 
-    private function _exportHistoriesToCsv(){
-        if(!isset($_POST['export_conditions'])) {
-            throw new \Exception ('[serach] input not set!');
-        }
-
-        parse_str($_POST['export_conditions']);//クエリ文字列を変数に変換
+    public function _exportHistoriesToCsv($date_range_first,  $date_range_last){
 
         $search_query = sprintf("
         SELECT
@@ -251,10 +247,9 @@ class AttendanceDb{
         //出力データの作成2
         try {
             $temp_path = sys_get_temp_dir();
-            $csv_filename = sprintf('%s__%s$%s.csv',
+            $csv_filename = sprintf('%s__%s.csv',
                             $date_range_first,
-                            $date_range_last,
-                            sha1(uniqid(mt_rand(), true)));
+                            $date_range_last);
             $csv_filepath= 'downloadable_csv/' . $csv_filename;
 
             $f = fopen($csv_filepath, 'w');
@@ -283,8 +278,6 @@ class AttendanceDb{
         } catch (\Exception  $e) {
             return $e->getMessage();
         }
-
-        //できればここでダウンロードさせたい
 
         return $csv_filepath;
     }

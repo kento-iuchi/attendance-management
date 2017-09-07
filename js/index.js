@@ -79,6 +79,17 @@ $(function(){
         return false;
     });
 
+    //削除
+    $('#attendance-form').submit(function() {
+        var form_inputs = $('#attendance-form').serialize();
+
+        $.post('_ajax.php', {
+            input_data: form_inputs,
+            mode: 'delete'
+        }, function(res){
+        });
+        return false;
+    });
     //もっと見る
-    
+
 });
