@@ -142,7 +142,7 @@ $histories = $attendanceDb->getHistories();
                         <div class="history-more">もっとみる（みたいなボタン作りたいよね）</div>
                     <?php endif; ?>
                 </td>
-                <td><button class="history-delete">削除</button></td>
+                <!-- <td><button class="history-delete">削除</button></td> -->
             </tr>
             <?php endforeach;?>
             <tr id="history_template">
