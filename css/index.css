@@ -2,8 +2,24 @@
     margin: 5px;
 }
 
+.left-title-column {
+    white-space: nowrap
+}
+
+#post_content_preview {
+    width: 500px;
+}
+
+#post_content_preview > div > table{
+    border-spacing: 20px 2px;
+}
+
 #post_content_preview.hidden{
     display: none;
+}
+
+#apply {
+    text-align: center;
 }
 
 #histories {
@@ -16,10 +32,6 @@
 
 #history_template {
     display: none;
-}
-
-.history-left-column {
-    white-space: nowrap
 }
 
 .not-cheked {
